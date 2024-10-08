@@ -1,0 +1,38 @@
+1. What are the key services provided by AWS? 
+Ans:- The key AWS services include:
+EC2 (Elastic Compute Cloud): Virtual servers in the cloud.
+S3 (Simple Storage Service): Scalable object storage.
+RDS (Relational Database Service): Managed relational databases.
+Lambda: Serverless compute service.
+VPC (Virtual Private Cloud): Network isolation.
+DynamoDB: Managed NoSQL database.
+CloudFront: Content delivery network (CDN).
+IAM (Identity and Access Management): User and access management.
+
+2. What is EC2 in AWS? 
+Ans:- EC2 (Elastic Compute Cloud) is a service that provides resizable compute capacity in the cloud. It allows users to run virtual machines on AWS infrastructure and is used for deploying applications.
+
+3. What is an S3 bucket? 
+Ans:- S3 (Simple Storage Service) bucket is a container that holds data objects. S3 is an object storage service that stores data as files, accessible from anywhere. You can store and retrieve any amount of data in an S3 bucket.
+
+4. Explain the difference between S3 and EBS.
+Ans:- S3: Object storage suitable for storing large amounts of data (files, backups). It's designed for scalability, durability, and availability.
+EBS (Elastic Block Store): Block storage used with EC2 instances for tasks like databases or file systems. It's low-latency storage for applications that require high-performance I/O.
+
+5. What is IAM in AWS? 
+Ans:- IAM (Identity and Access Management) is a service that helps you control access to AWS resources. You can create and manage users, groups, and roles, and assign permissions to grant or deny access to specific AWS resources.
+
+6. How does AWS VPC work? 
+Ans:- A VPC (Virtual Private Cloud) allows you to define your own logically isolated network within AWS. You can configure subnets, route tables, and network gateways, control IP address ranges, and apply security controls such as Security Groups and Network ACLs.
+
+7. What are Security Groups and how do they work? 
+Ans:- Security Groups are virtual firewalls for your AWS resources. They control inbound and outbound traffic to the instances based on rules you configure (allow or deny traffic based on IP addresses, ports, and protocols).
+
+8. What is an AWS region? 
+Ans:- An AWS region is a physical location where AWS has multiple Availability Zones (data centers). Regions are geographically distributed to provide redundancy and low-latency access for global customers.
+
+9. What are Availability Zones in AWS? 
+Ans:- Availability Zones (AZs) are distinct data centers within an AWS region. Each AZ is isolated from failures in other zones and interconnected with low-latency networks, providing high availability and fault tolerance for applications.
+
+10. What is Auto Scaling? 
+Ans:- Auto Scaling automatically adjusts the number of EC2 instances in your application based on demand. It ensures that the correct number of instances are running to handle the load, optimizing performance and cost.

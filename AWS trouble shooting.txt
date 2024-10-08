@@ -1,0 +1,117 @@
+AWS troubleshooting solutions:
+
+Topic 1: Network timed out:
+RDP/SSH -3389/22
+
+1. port should open in sg inbound rule
+2. need to check instance running or not
+3. instance status check 2/2 passed
+   1/2 - n/w, Antivirus,EBS,NW interface  (solution : stop/start)
+   0/2 - need to check with AWS | backend hw issue (Solution : stop/start)
+4. need to check instance screenshot
+   1. if it shows any BSOD (restore from latest backup)
+5. system log from EC2 console
+6. cloud trail - for any recent changes
+7. any rule place acl ( EC2 - Network - VPC - network acls - inbound rule - this 22 port should allow here)
+8. private subnet or public subnet (if subnet connect with igw then its public)
+9. VPC has igw or not
+10. VPC has rt entries or not
+----------------------------------------
+Topic 2: AWS application load balancer not working
+
+1. AWS ALB not working
+2. clients cannot connect to an internet facing load balancer
+3. troubleshooting your ALB
+
+solution:
+
+1. Load balancer backend instances status in service/Helthy
+2. if Load balancer backend instances status is out of service/unHelthy
+3. 3. instance status check 2/2 passed
+   1/2 - n/w, Antivirus,EBS,NW interface  
+   0/2 - need to check with AWS | backend hw issue 
+4. check SG and ACL for requiredport is opened or not.
+   a. check ALB lister port
+   b. check innstances sg rules
+   c. check lb sg rules
+5. check VPC - network ACL port allowed or not
+6. Load balancer health check configuration need to be verified
+7. Try to restart the application service inside of backend ec2 instances (systemctl restart httpd due to heavy load service may went to hung state)
+8. check for the ALB forwarding rulues confugured properly
+9. Private vs public subnet
+10. vpc had IGW or not
+11. cloud trial log for any activity
+12. stop /start the ec2 instances
+
+----------------------------------------
+Topic 3: VPC peering issues
+
+1. AWS peering issues
+2. AWS vpc peering troubleshooting
+3. AWS vpc peering not working
+
+1. check the sg in source and destination instances whether required ports are opened or not
+2. check the vpc peering status is active or not
+3. first check both the instances are connecting indivisually
+4. check total no of subnets in source vpc and check its properly associated with route table
+5. check total no of subnets in destination vpc and check its properly associated with route table
+6. check source vpc rt whether routing for peering is configured with proper CIDR or not
+7. check destination vpc rt whether routing for peering is configured with proper CIDR or not
+8. Disable the software firewall inside of EC2 instances and check
+
+---------------------------------------------
+Topic 4: S3 bucket showing Error access denier
+
+1. S3 bucket showing error acess denied
+2. S3 access column shows error for all buckets
+3. Troubleshoot erroe in the Access field for buckets
+
+Solution:
+
+1. check the status of all S3 buckets, whether all buckets are showing error or not
+2. check IAM role /user has the following permissions
+
+s3:GetAccountPublicAccessBlock
+s3:GetBucketPublicAccessBlock
+s3:GetBucketPolicyStatus
+s3:GetBucketAcl
+s3:ListAccessPoints
+
+3. possible login from root user and check the status of error bucket
+4. check the bucket have any custom policy in root account (we can define the source ip, to restict the data access)
+----------------------------------
+Topic 5: AWS Ec2 Auto scalling issues
+
+1. check your scalling policies to see whether an event triggers more than one policy 
+(go to EC2>auto scalling groups> your asg(under automatic scalling - dynamic scaling policy)
+
+2. verify if a scale-out policy and scale in policy triggered at the same time
+3. check ypur asg already reached max numner of instances
+4. check defaulf cooldown period 300s (5 min) and instance warmup period
+5. check if there is a lifecycle hook configured for Amzon ec2 auto scalling (to update software like yum install update -y)
+6. check is ther any scheduled action configured which conflicting the auto scalling group 
+(we can create customised set up for big billoin day like that using scheduled action)
+7. check suspended processes for your ASg (go to ec2-asg-advance configurations-suspended process)
+suspended process should blank (at maintainess activity we usually use this)
+
+----------------------------------
+
+Topic 6: Lambda issues
+
+1. AWS lambda event based triggered not working
+
+Solution:
+1. check the correct AWS event bridge trigger properly configured mapped to the lambda
+2. check the correct AWS event bridge trigger properly configured with right JSON
+3. when there is a posibility 
+
+
+
+
+
+
+
+
+
+
+

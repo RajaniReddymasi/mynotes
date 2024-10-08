@@ -1,0 +1,47 @@
+Common pod issues in Kubernetes and their resolutions
+1. Kubernetes is unable to pull the container image:-
+ Check image name: Ensure the image name and tag are correct.
+ Check image registry: Ensure the image is available in the specified container registry.
+ Credentials: If the image is in a private registry, make sure the proper image pull secret is configured and associated with the pod.
+ Command: Use kubectl describe pod <pod-name> to see the exact error message related to image pulling.
+2. Pods keep crashing and restarting:-
+ Check logs: Use kubectl logs <pod-name> to check the application logs for errors.
+ Describe the pod: Use kubectl describe pod <pod-name> to get more detailed information about the pod's state and recent events.
+ Resource limits: Ensure the pod has enough CPU and memory. Adjust resources.requests and resources.limits in the pod spec if necessary.
+ Health checks: Ensure your readiness and liveness probes are correctly configured to reflect the application's state.
+3. Pods are being killed due to running out of memory:-
+ Resource limits: Set appropriate resources.requests and resources.limits for memory in the pod spec.
+ Memory leaks: Check your application for memory leaks or inefficiencies.
+ Monitoring: Use tools like Prometheus and Grafana to monitor memory usage and adjust the resources accordingly.
+4. Pods remain in the "Pending" state and are not scheduled:-
+ Resource availability: Ensure there are enough resources (CPU, memory) available in the cluster to schedule the pod. Check with kubectl describe node.
+ Node selectors and affinities: Verify that any node selectors, affinities, or taints and tolerations are correctly configured and match available nodes.
+ Cluster capacity: If the cluster is running out of resources, consider scaling up the cluster by adding more nodes.
+5. Pods are not scheduled because nodes are in the "NotReady" state:-
+ Node status: Check the status of nodes with kubectl get nodes.
+ Kubelet status: Ensure the kubelet service is running on the node.
+ Network issues: Check for network connectivity issues between the node and the control plane.
+ Node health: Investigate node-specific issues such as disk pressure, memory pressure, or PID pressure.
+ 
+ kubectl run nginx --image=nginx
+kubectl delete pod nginx
+kubectl describe pod nginx
+kubectl logs nginx
+kubectl drain node1 (1. pods will shift to other node (control plane), 
+2. then cordon the node means scheduling will disabled, 
+3. you have to bring the node to schedule state by using kubectl uncordon node1 )
+kubectl uncordon node1
+kubectl cordon node1
+
+k drain node01 --ignore-daemonsets --force( it will drain even if pod is running and we will lost that pod)
+
+
+
+we need to install kubeadm 
+-------------
+1. apt-get upgrade -y kubeadm=1.12.0-0.0 
+2. kubeadm upgrade apply v1.12.0 
+3. kubectl get nodes 
+
+
+ingress resource will communicate with LB
