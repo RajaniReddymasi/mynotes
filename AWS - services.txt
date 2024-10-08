@@ -36,3 +36,13 @@ Ans:- Availability Zones (AZs) are distinct data centers within an AWS region. E
 
 10. What is Auto Scaling? 
 Ans:- Auto Scaling automatically adjusts the number of EC2 instances in your application based on demand. It ensures that the correct number of instances are running to handle the load, optimizing performance and cost.
+
+A VPC endpoint is a virtual device that allows users to securely connect their Amazon Virtual Private Cloud (VPC) to AWS services without using public IP addresses or leaving the Amazon network: 
+Benefits
+VPC endpoints allow users to privately connect to AWS services without the need for a VPN connection, internet gateway, NAT device, or AWS Direct Connect. 
+Types
+There are two types of VPC endpoints: interface endpoints and gateway endpoints: 
+Interface endpoints: These endpoints use PrivateLink to communicate with a wide range of services. Interface endpoints are charged by the hour and by the amount of data transferred. 
+Gateway endpoints: These endpoints are designed for specific services, such as Amazon S3 and Amazon DynamoDB. There is no additional charge for using gateway endpoints, but standard charges for resource usage and data transfer apply. 
+Communication
+With a VPC endpoint, instances in a VPC can communicate with resources in a service without leaving the Amazon network
