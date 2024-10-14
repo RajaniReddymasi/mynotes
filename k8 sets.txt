@@ -1,0 +1,82 @@
+replicaset:
+---------------
+it will create multiple pods besed on what you have defined in the code.
+
+ex: you have given 3 replicas and post that you have changed the image from nginx:latest to nginx:stable-otel
+you have updated the file but replicaset wont update the pods to the lastest changes. 
+this in only responsible to maintain the number of pods which you have mentioned in the code.
+if you deleted any of the pod intentionally or unintentionally automatically this replicaset will create a pod in the obesence of old one.
+
+pod can update with your new code but there will be downtime to go and create a new pod.
+
+deployment set:
+--------------------------
+you have given 3 replicas and post that you have changed the image from nginx:latest to nginx:stable-otel
+you have updated the file but deployment set can  update the pods to the lastest changes. 
+any changes in code first it will create 1 pod and then it will terminate the old one. at one point of time old and new pods will be available.
+it will do the same process for defined replicas
+deployment is a subset of replicaset
+
+if you deleted any of the pod intentionally or unintentionally automatically this replicaset will create a pod in the obesence of old one.
+
+
+
+deployment set:
+------------------------
+used for stateless application i.e ususlly used for frontend and backend
+
+statefulset:
+-----------------
+used for stateful application. which should have some storage. this will give the pods numerical range
+
+in statefulset:
+1. pods are created with -0,-1 in statefulset, because statefulset should keep the identity
+2. pods in deplyment are created at a time, but pods in statefulset will be created in orderly manner
+
+***statefulset must have headless service, what is headless service
+a service which will not have cluster ip is called headless
+
+Deployment vs Statefulset
+---------------------------
+1. stateful applications like DB
+2. PV and PVC are mandatory for statefulset
+3. Orderly provisioning of pods happens.
+4. pods keep their identity like name.
+5. We must create headless service.
+6. every pod should have its own storage. so PV and PVC should be created for every pod.
+
+
+1. Install EBS drivers
+2. Check EC2 Role permissions
+3. create storage class
+4. create statefulset
+
+mysql-mysql-0
+
+pvc-name-statefulset-name-0
+
+most impotant point for interview
+***************
+if deployment, nslookup of service gives, service IP address
+if statefulset, nslookup of headless service gives us IP address of all pods.
+
+1. PV --> representing physical storage
+2. PVC --> Claiming the storage
+3. SC --> automatic creation of volume and PV based on the claim from PVC
+
+Daemon set:
+---------
+it make sure pod should run on each and every node.
+if new node is added into cluster daemon set automatically spin up the pods in new node.
+if node is deleted then daemon set will delete the pod.
+
+its is useful for collecting server logs and pushing the logs for elastic search
+ex: in your manifest file you have not given number of replicas 
+if you add daemon set in the manifest you have only 1 pod, still pod is getting created in number of nodes a/c to your count of nodes.
+
+
+this is admin activity, have to find your pods in kube-system namespace
+
+zeal vora-->aws security specialist
+
+

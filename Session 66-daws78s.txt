@@ -1,0 +1,60 @@
+session 66:
+----
+need configure aws as bastion host nned aws acess
+need to update kube config
+ aws configure
+    3  20/07/24 06:15:10 aws sts get-caller-identity
+    4  20/07/24 06:16:05 aws configure
+		aws configure
+		_________
+AWS Access Key ID [None]: AKIAW3MECTIWRAWRSE76
+AWS Secret Access Key [None]: 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
+Default region name [None]: us-east-1
+Default output format [None]:
+______________________
+
+    5  20/07/24 06:17:57 aws eks update-kubeconfig --region us-east-1 --name expense-dev
+    6  20/07/24 06:18:04 ls -la
+    7  20/07/24 06:19:11 kubectl get nodes
+    8  20/07/24 07:49:03 mysql -h db-dev.aadhyuar2105.online -u root -pExpenseApp1
+
+
+load balancer setup we should do
+
+eksctl utils associate-iam-oidc-provider \
+    --region us-east-1\
+    --cluster expense-dev \
+    --approve
+	
+eksctl create iamserviceaccount \
+
+--cluster=expense-dev \
+--namespace=kube-system \
+--name=aws-load-balancer-controller \
+--attach-policy-arn=arn:aws:iam::471112784429:policy/AWSLoadBalancerControllerIAMPolicy \
+--override-existing-serviceaccounts \
+--approve
+
+helm repo add eks https://aws.github.io/eks-charts
+
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=expense-dev
+
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  --set clusterName=expense-dev \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller \
+  -n kube-system
+  
+*** our lb should run in k8-administer name space, eks can communicate with aws ALB
+[ ec2-user@ip-10-0-1-42 ~ ]$ kubectl get pods -n kube-system like below, bcz of this 
+NAME                                            READY   STATUS    RESTARTS   AGE
+aws-load-balancer-controller-665cf6dd6c-7mw76   1/1     Running   0          87m
+aws-load-balancer-controller-665cf6dd6c-kks9d   1/1     Running   0          87m
+aws-node-4ngft                                  2/2     Running   0          4h20m
+aws-node-kpr5k                                  2/2     Running   0          4h19m
+coredns-586b798467-2kbhs                        1/1     Running   0          5h58m
+coredns-586b798467-qck4g                        1/1     Running   0          5h58m
+eks-pod-identity-agent-7kzcd                    1/1     Running   0          4h20m
+eks-pod-identity-agent-xskqh                    1/1     Running   0          4h20m
+kube-proxy-m89wc                                1/1     Running   0          4h20m
+kube-proxy-px6gx                                1/1     Running   0          4h20m

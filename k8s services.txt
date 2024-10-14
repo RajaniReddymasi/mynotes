@@ -1,0 +1,106 @@
+Vm should have aws credetails:
+1. aws configure
+2. go iam and click on users copy the access key and secreat key
+
+3. need to install eksctl
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+eksctl version
+
+4.need to install kubectl
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.30.0/2024-05-12/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv kubectl /usr/local/bin
+kubectl version --client
+
+5. kubectl version
+
+namespace: isolated project space where you can created resources related to your project
+
+POd: pod is a smallest deploybale unit in kubernates.
+
+Container is deploable unit docker.
+
+Pod vs container:
+___________________
+a pod containes multiple containers. container inside pod share seme network and storage.
+
+kubernates services:
+1. load balancer
+2. service mesh(cluser ip , node port)
+
+cluster ip: 
+______________________
+1. first create a pod with set of labels
+2. create a service and give the same labels of which pod you want to attach to service.
+3, create a pod and service.
+
+if your use curl http://nginx it wont out side of cluster, but inside the cluster your on with ay pod able to acess the curl http://nginx.com/amazon-eks/1
+
+nodeport:
+_____________________
+1. first create a pod with set of labels
+2. create a service. for nodeport , you have to define under spec type:NodePort and give the same labels of which pod you want to attach to service.
+3.if you want to go with custom port then have to give the cutomeport at end of your code.
+4.create a pod and service.
+5. check kubectl get pods -o wide for where the pod has been created in cluster nodes
+6. go to that node and go to security gruop, edit the rules 
+7. select cutom tcp and enter the port number and expose to internet.
+8.when you check with node public ip and port number , you can able to access it.
+
+
+1.Pod:
+______________
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nginx
+  labels: 
+    name: frontend
+    project: expense
+    component: frontend
+    environment: dev
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+	
+2.cluserip:
+____________________________
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  selector:
+    name: frontend
+    project: expense
+    component: frontend
+    environment: dev
+  ports:
+  - protocol: TCP
+    port: 80 #service-port
+    targetPort: 80 #target-port
+
+#if your mentioning only service and attaching the service to pod then
+ this is called cluster ip, here pods are communicating only inside cluser through cluser ip
+ 
+3. Nodeport:
+___________________
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-np
+spec:
+  type: NodePort
+  selector:
+    name: frontend
+    project: expense
+    component: frontend
+    environment: dev
+  ports:
+  - protocol: TCP
+    port: 80 #service-port
+    targetPort: 80 #target-port
+    nodePort: 32760
+	

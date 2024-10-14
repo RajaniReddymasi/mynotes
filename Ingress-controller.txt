@@ -1,0 +1,73 @@
+CLB:classic load balancer
+------
+layer 4 and 7, old generation and not recommended by aws
+
+ALB: application load balance
+-----------
+layer 7
+advanced routing approches.
+NLB:
+----------
+layer 4
+high performance use cases
+static or elastic ip
+
+
+ALB->listener>Rule>TG
+ALB/ingress controller-->ingress-->service-->POd
+
+Existing alb attach to eks
+ingress creating ALB
+
+1. ALB is never part of EKS cluster, easy to create or part of infra if created outside of eks. 
+you can create listners, attach ssl cerificates, create rules, tg etc.
+
+you can easily attach pods directly to ALB tg using targer group binding resource.
+
+
+
+
+ingresscontroller: which acts as reverse proxy and load balancer.
+ingresscontroller is an external componet to eks cluster through which eks receives the traffic.
+in eks 
+ALB - ingress controller
+---
+***vry important:
+for ingress controller ingress resource is must
+we can use host based routing or context based
+in out project we are using host based routing
+
+for more k8s videos go thorugh;
+https://www.youtube.com/@justmeandopensource
+
+
+1. create oidc
+eksctl utils associate-iam-oidc-provider \
+    --region us-east-1 \
+    --cluster expense-dev \
+    --approve
+
+2. 
+curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.8.1/docs/install/iam_policy.json
+
+aws iam create-policy \
+    --policy-name AWSLoadBalancerControllerIAMPolicy \
+    --policy-document file://iam-policy.json
+	
+4. 
+eksctl create iamserviceaccount \
+--cluster=expense-dev \
+--namespace=kube-system \
+--name=aws-load-balancer-controller \
+--attach-policy-arn=arn:aws:iam::471112784429:policy/AWSLoadBalancerControllerIAMPolicy \
+--override-existing-serviceaccounts \
+--approve
+
+
+ALB->listener>Rule>TG
+ALB/ingress controller-->ingress-->service-->POd
+
+
+git add .
+git branch -M main
+git remote add origin https://github.com/RajaniReddymasi/k8-ingress.git

@@ -1,0 +1,115 @@
+Terraform interview questions and answers 🔥
+
+1. State File Management and Recovery
+
+Check for a backup state file (e.g., terraform.tfstate.backup) and restore it.
+
+If using a remote backend (e.g., S3, GCS), use versioning to retrieve a previous state.
+
+Always enable versioning and state locking (DynamoDB for AWS) to prevent state corruption.
+
+Use Terraform refresh to sync the state with the current infrastructure if the state is lost or corrupted.
+
+
+2. Handling Sensitive Information
+
+Use environment variables to pass sensitive data (e.g., passwords, API keys).
+
+Store secrets in secret management systems like AWS Secrets Manager, HashiCorp Vault, or Azure Key Vault.
+
+Mark sensitive variables with sensitive = true to avoid displaying them in logs or outputs.
+
+Avoid committing sensitive data in version control by using .gitignore to exclude state files and variables files.
+
+Use encrypted backends (e.g., S3 with encryption enabled) to store state securely.
+
+
+3. Module Versioning
+
+Use semantic versioning (e.g., v1.0.0) for modules to maintain compatibility across environments.
+
+Specify module versions explicitly in the source field (e.g., source = "module/path?ref=v1.0.0").
+
+Test module changes in a staging environment before updating them in production.
+
+Use terraform plan to check for breaking changes before applying new module versions.
+
+Lock module versions in terraform.lock.hcl to ensure consistent usage across environments.
+
+
+4. Multi-Environment Management
+
+Create separate variable files (e.g., dev.tfvars, prod.tfvars) for environment-specific configurations.
+
+Use Terraform workspaces to manage multiple environments with the same configuration.
+
+Organize environment-specific resources using directory structure (e.g., environments/dev, environments/prod).
+
+Use a shared module structure to avoid code duplication across environments.
+
+Implement remote state backends (e.g., separate S3 buckets) for each environment to avoid conflicts.
+
+
+5. State Locking and Concurrency
+
+Terraform uses state locking (e.g., via DynamoDB in AWS) to prevent concurrent operations on the state file.
+
+If a team member tries to apply changes while another is applying, Terraform will wait until the state is unlocked.
+
+Ensure state locking is enabled by using a remote backend with locking support (e.g., DynamoDB for AWS).
+
+Educate team members on locking behavior to avoid simultaneous changes.
+
+Use a CI/CD pipeline to control Terraform operations and reduce the risk of manual concurrency issues.
+
+
+6. Managing Drift in Infrastructure
+
+Use terraform plan to identify any changes in the infrastructure that were made outside of Terraform.
+
+Run terraform apply to bring the infrastructure back to the state defined in the Terraform configuration.
+
+Implement policies and access control to limit manual changes in the cloud provider console.
+
+Set up automated drift detection (e.g., using scheduled terraform plan runs) to monitor for changes.
+
+Use external data sources in Terraform to reference infrastructure managed outside of Terraform, if necessary.
+
+
+7. Terraform Backend Migration
+
+Update the backend block in your configuration to point to the new S3 bucket.
+
+Run terraform init -migrate-state to safely migrate the state from the local backend to the S3 backend.
+
+Ensure the new backend supports state locking and versioning (e.g., S3 + DynamoDB).
+
+Verify the state migration by running terraform plan to confirm there are no changes.
+
+Test the migration in a staging environment before applying it to production.
+
+
+8. Managing Terraform Workspaces
+
+Workspaces allow managing different states for the same configuration (e.g., dev, staging, prod).
+
+Use terraform workspace new <name> to create a new workspace for each environment.
+
+Use terraform workspace select <name> to switch between workspaces.
+
+Each workspace has its own isolated state file, making it easy to manage multiple environments.
+
+Use conditional logic in your configurations (e.g., count or for_each) to handle environment-specific resources.
+
+
+9. Splitting Large Terraform Projects
+
+Break down large configurations into smaller modules (e.g., networking, compute, storage) for reusability.
+
+Use Terraform modules to encapsulate common functionality and avoid duplication.
+
+Organize your project by service or resource type (e.g., modules/vpc, modules/compute).
+
+Use remote backends to manage the state of different modules independently (e.g., each module with its own S3 bucket).
+
+Implement CI/CD workflows to ensure that changes to each module are tested and applied independently.

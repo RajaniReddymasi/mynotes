@@ -1,0 +1,111 @@
+session 58/59
+kubernetes volumes:
+2 types of volumes
+EBS:Elastic blob storage
+EFS:elastic file system
+
+google drive works on NFS protocol. (network file sharing)
+
+1. static provisioning 
+2. dynamic provisioning
+
+
+static provisioning
+____________
+EBS:(elastic block storage)
+1.
+volume create at 10 mins
+
+need to install csi drive in the cluster, as cluster shuold connect for ebs volume know
+2.
+kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.32"
+
+kubectl get ns
+kubectl get pods -n kube-system (you must see the admin details, as csi controller info post installing csi drivers)(kube system have admin things)
+
+3.
+your nodes should have access to connect with ebs volume. ebscsi policy need to attach to the eks cluster nodes
+
+4. 
+wrappers:
+you can represent ebs volume inside k8s with a resource called "persistent volume". this is eqivalent to ebs storage inside k8 cluster. this is admin level
+
+PVC:
+persistent volume claim. Pods should claim i want the volume.pods can claim the volume through resource called pvc.this is user level
+
+_____________________________
+important note: if you stopped the cluster and when you craete again the cluster nodes will change and the nodes have not the of the role is ebscsidriver policy. 
+which we have to attach the policy again whenever nodes get changes.
+___________________________
+
+k8s-access modes:
+read-write-once: we cant connect hard disk to multiple devices at a time, similarly ebs also works as hard disk so access mode read-write-once
+
+Dynamic provisioning:
+___________________
+1.
+volume create at 10 mins
+
+need to install csi drive in the cluster, as cluster shuold connect for rbs volume know
+2.
+kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.32"
+3.
+someone on behalf of you should create volume and equivalent pv in k8s. this can be done by storage class in k8s
+
+retain,recycle,delete
+4.
+
+static provisioning:
+kid-->mother-->father-->money
+pod-->pvc-->pv-->storage
+
+dynamic provioning:
+kid-->mother-->e wallets -->money
+pod-->pvc-->storage class --> storage
+
+ebs vs efs
+____________
+1. ebs is like hard disk, volume and instance should be in one AZ
+2. efs is through nfs protocal , it can be anywhere
+3. ebs volume is static, it cant increase by its won
+4. efs is completely dynami, it can automatically expand. which is suitable for DB applications like mysql. ebs have less latency.
+
+ebs is good for db like mysql as data no need to travel , volume and pod will be same network or AZ.
+efs is good for images and videos
+
+
+EFS:
+----------------------------
+a. Static provisoning:
+
+1. need to create efs volume in aws account 
+2. allow ec2 instaces on nfs protocol in efs sg
+( means have to copy the cluster nodes sg id and add the inbound rule of your efs sg on nfs protocol and paste your sg id)
+3. install drivers , efs drivers
+4. check iam access on ec2 instances
+installation of efs driver:
+
+kubectl kustomize \
+    "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/ecr/?ref=release-2.0" > private-ecr-driver.yaml
+	
+	kubectl apply -f private-ecr-driver.yaml
+	
+5. add the policy of efscsi
+
+LB:>node on particular port-->node should allow traffic from LB --> nodeport -->cluster IP-->Pod
+
+b. dynamic provision :
+------------------
+1. installi efs csi drivers
+2. check ec2 nodes shouls have efs csi role permission
+3. storage EFS volume
+4. check efs sg allowing ec2 sg
+5 create sc
+
+
+implementing expese with volumes_________
+1. install ebs csi drivers
+2 . ec2 nodes permisions
+
+
+Admin team created sc and name space, drivers inastalled and permissions given to node.

@@ -1,0 +1,44 @@
+K8-Architectre
+-----
+control plane/master component
+node component
+
+Master:  have kube API server, kube scheduler, kube controll manager, etcd
+------------------------------------------------------------------------
+1>this is main component.API server responding to all user requests.
+it runs on port http 443
+ ex: when we execute kubectl get pods that request go to api server and this communicate with k8
+ s
+
+2>responsible to schedule the pods. it will check multiple things while scheduling.
+like taint, tolerances, affinity, underlying server memory, cpu consumption etc
+
+3>controll manager:
+1.replica controller component:>>replicaset>>is one of the component of control manager:if you delete the pod, it will automatically create the pod automatically
+2. node controller: checks the nodes all the time, whether they are ready,able to schedule or not.
+if any node is down it will make sure another node is created and shifts the pods to different node.
+3. Service account controller: creates service account for every namespace created. basically under internal authentication.
+
+4>etcd: 
+entire k8s cluster data in etcd. it is very important to take frequent backup.
+if cloud, aws team will responsible for this.
+ 
+Node components:
+-----------------
+1. kubeproxy:-->on behalf of someone> it intercepts evry incoming and outgoing request of node. kube-proxy maintains network rules on nodes.
+it runs on evry node.
+
+2 .kubelet-->it works as a agent. it connects nodes to control plane.an agent that runs on each node in the cluster.
+it pulls the info from control plane and runs the pods.
+
+3. container runtime: it is on everynods. it basically runs the images into container.
+containerd is the runtime usually.
+
+add-ons:
+kube-dns:provide dns to the prods. http://backend:8080. kubedns provides ip address to the service when one pod wants to connect with other pod.
+
+networking plugins: VPC CNI(container network interface)default network inside eks.we have multiple nodes and this vpc cni gives the netork to the nodes.
+
+
+
+

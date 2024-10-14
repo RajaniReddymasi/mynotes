@@ -1,0 +1,125 @@
+  1  20/06/24 00:37:54 sudo su -
+    2  20/06/24 00:37:54 sudo su -
+    3  20/06/24 00:42:11 exit
+    4  20/06/24 00:42:43 clear
+    5  20/06/24 00:42:54 docker ps
+    6  20/06/24 00:43:14 sudo systemctl start docker
+    7  20/06/24 00:43:34 sudo systemctl enable docker
+    8  20/06/24 00:43:40 docker ps
+    9  20/06/24 00:43:47 docker ps -a
+   10  20/06/24 00:45:40 docker run -d -p 80:80 nginx
+   11  20/06/24 00:45:50 docker ps -a
+   12  20/06/24 00:45:55 docker ps
+   13  20/06/24 00:46:31 docker ps 959c86e89d32
+   14  20/06/24 00:46:46 docker logs 959c86e89d32
+   15  20/06/24 00:47:17 docker logs -f 959c86e89d32
+   16  20/06/24 00:47:46 docker inspect 959c86e89d32
+   17  20/06/24 00:48:16 docker images
+   18  20/06/24 00:48:37 docker inspect dde0cca083bc
+   19  20/06/24 00:49:02 docker ps
+   20  20/06/24 00:49:25 docker exec -it 959c86e89d32 /bash
+   21  20/06/24 00:49:48 docker exec -it 959c86e89d32 bash
+
+
+to build the image 
+
+ docker build -t from:1.0 .
+
+   41  20/06/24 01:09:44 docker rmi `docker images -a -q`
+   42  20/06/24 01:09:55 docker images
+   43  20/06/24 01:10:35 docker rm -f `docker ps -a -q`
+   46  20/06/24 01:11:49 docker rmi `docker images -a -q`
+   47  20/06/24 01:11:54 docker images
+   48  20/06/24 01:12:44 docker build -t run:1.0 .
+   49  20/06/24 01:12:49 docker images
+   50  20/06/24 01:13:15 docker rmi `docker images -a -q`
+   51  20/06/24 01:13:37 docker system prune -----to clear the cache 
+   52  20/06/24 01:13:55 docker build -t run:1.0 .
+   61  20/06/24 01:22:29 docker run -d -p 8081:80 cmd:1.0
+
+1. cmd instruction runs at container creation time
+
+2. docker file allows you for creating your own custom images
+
+3. compared to Traditional vms, what is the advantage of docker? for better resource utilization
+
+4. ARG instruction can write beform FROM instruction
+
+5. docker ps for listing all the containers
+
+6. command for stopped container to remove the container: ans/ docker rm <container id>
+
+7. entry point in docker file: 
+to define the command that runs as the main process
+
+8. --no-cache is used for: it forces docker to rebuild the image without using cache
+
+9. if we dont specify tag the image will be tagged as latest.
+
+10. docker compose: defining and running multi-container docker applications
+
+11.  command for stopping all running containers: docker stop $(docker ps -q)
+
+12. command for removing all stopped containers and unused images?
+docker system prune (clearing everything)
+
+13.to view the logs of running container?
+docker logs <container-id>
+
+14. expose instruction in dockerfile?
+this used for port
+informs docker that container listens on the specified port
+
+
+
+________________________
+
+e vidyaloka
+maths and science
+10 to 11am
+
+
+kubectl get ns
+kubectl get namespace
+kubectl apply -f filename
+kubectl delete -f filename
+
+kubens expense (it will switch to expense name space)
+or esle 
+kubectl get pvc mysql -n expense (each and every time whatever you want to see you have to -n and your namespace name)
+
+k9 install
+curl -sS https://webinstall.dev/k9s | bash
+
+mysql -h mysql -uroot -pExpenseApp@1 
+
+ kubectl taint nodes ip-192-168-12-185.ec2.internal project=expense:NoSchedule
+  kubectl label nodes ip-192-168-12-185.ec2.internal project=expense
+  
+  ls |cut -d"." -f2
+  
+ cluster creation with eksctl
+namespace
+pods
+configmap
+screats
+services
+   cluster ip
+   node ip
+   load balance
+sets
+  replica sets
+  deployment 
+  setsstateful sets
+
+expense project using deployment
+how to use config maps as volume
+
+static provisioning
+dynamic provisioning
+
+ebs vs efs difference:
+
+pv is admin
+sc admin
+pvc is user level-name space level-name

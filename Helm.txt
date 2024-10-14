@@ -1,0 +1,82 @@
+Helm use in kubernetes
+1. as package manager we use
+2. to templatise the manifest file
+
+helm install nginx .
+helm uninstall nginx .
+helm upgrade nginx .
+helm status nginx
+helm history nginx (show you the history of nginx deployment)
+helm rollback nginx (go back to version) 
+ 
+Chart.yaml
+values.yaml
+template folder
+
+----------------------
+
+Helm use in kubernetes
+1. as package manager we use
+2. to templatise the manifest file
+
+helm install nginx .
+helm uninstall nginx .
+helm upgrade nginx .
+helm status nginx
+helm history nginx (show you the history of nginx deployment)
+helm rollback nginx (go back to version) 
+ 
+Chart.yaml
+values.yaml
+template folder
+
+
+
+Role based access control -july 5th class is pending 
+
+HPA: Horizontal pod autoscalling: Based on the resource definition if cpu is 20% used the accoring to you hpa scripts pods will scale up
+
+-------------------
+autoscalling 
+autoscalling policy
+CPU
+a pod is over utilized or less utilized based on resource definition
+
+1. metric server
+2. resource definition in pod
+
+we have to give the resources in the spec
+
+ spec:
+      containers:
+      - name: frontend
+        image: joindevops/frontend:v1.0
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "150m"
+            memory: "256Mi"
+			
+---
+			
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: frontend
+  namespace: expense
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: frontend
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 20

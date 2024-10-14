@@ -1,0 +1,69 @@
+### 1. *Pods in CrashLoopBackOff State*
+   *Answer:* 
+   - *Check the Logs:* Start by running kubectl logs <pod-name> to see what’s causing the pod to crash.
+   - *Inspect the Events:* Use kubectl describe pod <pod-name> to check for events and look at why it’s restarting.
+   - *Common Issues:* It could be due to a misconfiguration, such as a wrong environment variable, insufficient resources, or a missing dependency.
+   - *Fix the Issue:* Once identified, you may need to adjust the configuration, allocate more resources, or fix any underlying issue in your application code.
+
+### 2. *High Latency in Services*
+   *Answer:* 
+   - *Check Resource Usage:* Use kubectl top pods and kubectl top nodes to check if any pods or nodes are under high CPU or memory usage.
+   - *Network Inspection:* Check the network policies and whether the service is correctly routing traffic. You can use tools like kubectl exec to get into the pod and test connectivity.
+   - *Look at the Service Logs:* Inspect the logs of the service and the associated pods for any errors or delays.
+   - *Analyze Load Balancing:* If you’re using a load balancer, ensure it's distributing the traffic evenly.
+
+### 3. *Failed Deployment Due to Resource Limits*
+   *Answer:*
+   - *Check Resource Quotas:* Verify if your namespace has resource quotas that might be preventing the deployment. You can check using kubectl get quota.
+   - *Inspect the Limits in the Deployment:* Ensure that the resource requests and limits in the deployment YAML file are realistic and within the node’s capacity.
+   - *Adjust Node Resources:* If the nodes are under-provisioned, consider adding more resources to them or scaling your cluster by adding more nodes.
+   - *Refactor the Deployment:* Adjust the deployment to use less intensive resource requests if necessary.
+
+### 4. *Networking Issues Between Pods*
+   *Answer:*
+   - *Check Network Policies:* Use kubectl get networkpolicy to ensure there are no restrictive policies blocking traffic between pods.
+   - *Ping Pods:* Use kubectl exec -it <pod-name> -- ping <target-pod-ip> to test connectivity between the pods.
+   - *Service Configuration:* Ensure the services or pod-to-pod communication is configured correctly, including DNS settings.
+   - *CNI Plugin Inspection:* If the issue persists, check the CNI (Container Network Interface) plugin for any issues.
+
+### 5. *PersistentVolumeClaim (PVC) Not Bound*
+   *Answer:*
+   - *Check PV Availability:* Use kubectl get pv to ensure there’s a PersistentVolume that matches the requirements of the PVC (size, access mode).
+   - *Inspect PVC Details:* Use kubectl describe pvc <pvc-name> to get more information on why it’s stuck in the Pending state.
+   - *Provision a PV:* If no suitable PV is available, you might need to create one manually or ensure your storage class is set up correctly for dynamic provisioning.
+   - *Correct Binding Errors:* If the PV exists but is not binding, check for mismatches in storage class names or access modes.
+
+### 6. *Unexpected Node Failures*
+   *Answer:*
+   - *Drain the Node:* Start by draining the node using kubectl drain <node-name> --ignore-daemonsets --delete-local-data to safely move workloads.
+   - *Check Node Status:* Use kubectl get nodes and kubectl describe node <node-name> to gather information about what went wrong.
+   - *Review Logs:* Check the node logs or the cloud provider's dashboard (if applicable) to find the root cause, such as hardware issues or resource exhaustion.
+   - *Replace the Node:* If the node cannot be recovered, replace it with a new node, ensuring the cluster auto-scaler is working correctly to maintain availability.
+
+### 7. *Kubernetes API Server Slowness*
+   *Answer:*
+   - *Check API Server Logs:* Use kubectl logs -n kube-system <apiserver-pod-name> to review the logs for any errors or warnings.
+   - *Resource Usage:* Ensure the API server has sufficient CPU and memory resources. High resource usage might be causing the slowness.
+   - *Network Latency:* Check the network latency between the API server and etcd, as issues here can significantly impact performance.
+   - *Investigate etcd:* If etcd is slow or under heavy load, the API server will be affected. Use kubectl -n kube-system exec etcd-<node-name> -- etcdctl endpoint status to inspect etcd health and performance.
+
+### 8. *Image Pull Issues*
+   *Answer:*
+   - *Check Image Name:* Ensure the image name and tag are correctly specified in the deployment YAML.
+   - *Registry Access:* Verify that the Kubernetes nodes have access to the container registry. If it’s a private registry, ensure the correct image pull secret is being used.
+   - *Inspect Node Connectivity:* Use kubectl describe pod <pod-name> to see if there are any specific error messages related to the image pull.
+   - *Re-check Authentication:* If using a private registry, re-authenticate with kubectl create secret docker-registry to ensure correct credentials.
+
+### 9. *Unresponsive Cluster Components*
+   *Answer:*
+   - *Check Pod Status:* Start by checking the status of the kube-scheduler or kube-controller-manager pods using kubectl get pods -n kube-system.
+   - *Review Logs:* Use kubectl logs to check the logs of these components to see if there are any errors or resource issues.
+   - *Resource Allocation:* Ensure the nodes running these critical components have enough resources. If needed, allocate more CPU/memory to these pods.
+   - *Inspect etcd:* As these components rely on etcd, check etcd's health to ensure it’s functioning correctly.
+
+### 10. *HPA (Horizontal Pod Autoscaler) Not Scaling*
+   *Answer:*
+   - *Check HPA Configuration:* Use kubectl describe hpa <hpa-name> to ensure the correct metrics (like CPU or memory usage) are set for scaling.
+   - *Inspect Metrics Server:* Ensure the Kubernetes metrics server is running and healthy, as HPA depends on it for scaling decisions.
+   - *Check Pod Metrics:* Use kubectl top pods to see if the current metrics justify scaling. The HPA might not scale if the resource usage is below the threshold.
+   - *Look for Throttling:* Check if any throttling is happening on the nodes that could be impacting the scaling operation.

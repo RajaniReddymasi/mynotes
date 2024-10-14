@@ -1,0 +1,37 @@
+imagepullpolicy:
+node have  nginx:latest imagepullpolicy
+you have updated the image as nginx:alpha
+so if nodes should pull the changes each time means we have to select imagepullpolicy as always
+
+Taint:
+-----------
+ kubectl taint nodes ip-192-168-12-185.ec2.internal project=expense:NoSchedule
+  kubectl label nodes ip-192-168-12-185.ec2.internal project=expense
+
+Tolerations are applied to pods. Tolerations allow the scheduler to schedule pods with matching taints. 
+Tolerations allow scheduling but don't guarantee scheduling: the scheduler also evaluates other parameters as part of its function.
+
+Affinity:
+
+affinity = like
+
+1. schedule -- scheduler schedules the pod
+2. execution --pod should run
+
+preferredDuringSchedulingIgnoredDuringExecution --> soft
+requiredDuringSchedulingIgnoredDuringExecution --> hard
+
+ip-192-168-42-153.ec2.internal --> tained with project exepense
+
+labelled also with project exepense
+1. Node effinity
+
+requiredDuringSchedulingIgnoredDuringExecution --> pod will not run even you set affinity. 
+we need to apply tolerations. So in this case until you apply toleration pod will be in pending state
+
+preferredDuringSchedulingIgnoredDuringExecution --> scheduler tries the asked node, 
+but it cant schedule because tainted node. since it is only preferred it can schedule on to differnt node
+
+
+2. Pod affinity:
+
