@@ -1,0 +1,185 @@
+Kubernetes Scenario-Based Interview Questions
+
+Cluster Management and Architecture:
+____________________________________
+
+1. Scenario: Your Kubernetes control plane crashed. How would you investigate and restore the cluster?
+
+Control Plane Crash
+1. Investigate: Check logs, error messages and system status.
+2. Identify the cause: Hardware failure, software issue or configuration error.
+3. Restore:
+    1. Reboot or replace faulty nodes.
+    2. Reconfigure or update software.
+    3. Restore from backups.
+
+
+2. Scenario: You need to set up a multi-node Kubernetes cluster with high availability. What architectural considerations will you take into account?
+Multi-Node Cluster Setup
+1. High availability: Multiple master nodes, load balancing.
+2. Scalability: Auto-scaling, horizontal pod scaling.
+3. Security: Network policies, encryption.
+4. Monitoring: Logging, metrics, alerting.
+
+
+3. Scenario: One of your worker nodes is not joining the cluster. How would you debug the issue?
+Worker node issues:
+1. Investigate: Check node status, logs and network connectivity.
+2. Debug:
+    1. Verify node configuration.
+    2. Check network policies.
+    3. Inspect kubelet logs.
+
+_________________________________________________
+
+Networking and Ingress
+
+4. Scenario: How would you expose multiple services using a single IP with different paths (e.g., /service1 and /service2)?
+
+Exposing Multiple Services
+1. Ingress resource with multiple paths.
+2. Service mesh (e.g., Istio).
+3. API Gateway (e.g., NGINX).
+
+5. Scenario: A Pod cannot communicate with another Pod in a different namespace. How will you troubleshoot it?
+
+Pod Communication
+1. Verify network policies.
+2. Check service and pod configurations.
+3. Inspect kube-proxy logs.
+
+
+6. Scenario: How would you restrict certain services to be accessible only within the cluster?
+
+Restricting Service Access
+1. Network policies.
+2. Service annotations (e.g., cluster.local).
+3. Kubernetes Network Policies.
+____________________________________________________
+
+Storage Management
+
+7. Scenario: Your application requires persistent storage. How would you configure it in Kubernetes?
+Persistent Storage
+1. Persistent Volumes (PVs).
+2. StatefulSets or Deployments.
+3. StorageClass configuration.
+
+
+8. Scenario: A Pod using a Persistent Volume gets stuck in the Pending state. What steps would you take to resolve the issue?
+Pending Persistent Volume
+1. Investigate: Check PV and PVC status.
+2. Resolve:
+    1. Verify storage class configuration.
+    2. Inspect kube-controller-manager logs.
+
+
+9. Scenario: How would you ensure data redundancy in a Kubernetes cluster?
+Data Redundancy
+1. Replicate data across multiple nodes.
+2. Use distributed storage solutions (e.g., Ceph).
+3. Regular backups.
+
+______________________________________________________________________
+
+Security and Access Control
+
+10. Scenario: You need to allow a specific namespace to pull images from a private Docker registry. How would you configure it?
+Private Docker Registry
+
+1. Create a Kubernetes secret.
+2. Configure Docker registry credentials.
+3. Update Deployment/ Pod configuration.
+
+
+11. Scenario: How would you create and manage role-based access controls (RBAC) for multiple teams using the same Kubernetes cluster?
+Role-Based Access Control
+
+1. Define roles and cluster roles.
+2. Create role bindings.
+3. Use Kubernetes RBAC.
+
+12. Scenario: A developer reports unauthorized access to a resource. How would you audit and secure the cluster?
+Unauthorized Access
+
+1. Investigate: Audit logs and system events.
+2. Secure:
+    1. Update RBAC configurations.
+    2. Restrict network access.
+______________________________________________
+
+5. Workload Management and Deployment Strategies
+
+13. Scenario: How would you deploy an application in a rolling update fashion while minimizing downtime?
+Rolling Update
+
+1. Use Deployments with rolling update strategy.
+2. Configure maxSurge and maxUnavailable.
+3. Monitor rollout status.
+
+
+14. Scenario: You need to deploy a new version of an application but need the ability to quickly revert if there are issues. How would you implement this?
+Quick Revert
+1. Use canary releases or blue-green deployments.
+2. Configure rollbacks.
+3. Monitor application performance.
+
+15. Scenario: If a Pod becomes unresponsive during deployment, how would you identify and resolve the problem?
+Unresponsive Pod
+
+1. Investigate: Check pod logs and system events.
+2. Resolve:
+    1. Verify pod configuration.
+    2. Inspect kubelet logs.
+____________________________________________________________
+
+6. Autoscaling and Resource Management
+
+16. Scenario: How would you configure autoscaling for an application based on CPU and memory usage?
+Autoscaling
+
+1. Use Horizontal Pod Autoscaling (HPA).
+2. Configure CPU and memory thresholds.
+3. Monitor scaling events.
+
+17. Scenario: Your application experiences unpredictable traffic spikes. How would you optimize resource allocation?
+Resource Optimization
+1. Use Vertical Pod Autoscaling (VPA).
+2. Configure resource requests and limits.
+3. Monitor resource utilization.
+
+
+18. Scenario: What would you do if a Pod consumes more resources than allocated, causing other applications to slow down?
+Resource Starvation
+
+1. Investigate: Check resource utilization.
+2. Resolve:
+    1. Update resource requests and limits.
+    2. Configure Quality of Service (QoS).
+
+_________________________________________________________
+
+7. Monitoring and Logging
+
+19. Scenario: How would you set up monitoring for the cluster and applications running on it?
+Cluster Monitoring
+
+1. Use Prometheus and Grafana.
+2. Configure metrics and alerting.
+3. Monitor cluster performance
+
+
+20. Scenario: An application is running but is not behaving as expected. How would you collect logs for troubleshooting?
+Application Logging
+
+1. Use Kubernetes logging mechanisms.
+2. Configure log forwarding.
+3. Monitor application logs.
+
+21. Scenario: How would you monitor the health of Kubernetes components and trigger alerts on failure
+Monitoring and Logging
+Component Health
+
+1. Use Kubernetes liveness and readiness probes.
+2. Configure health checks.
+3. Monitor component status.
