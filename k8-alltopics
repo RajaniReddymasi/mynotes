@@ -1,0 +1,64 @@
+daemonset will make sure a pod runs in every node. why this is useful?
+
+we have to access underlying node logs and push them to elastic search for log monitoring. if we run deamonset in kubernetes, 
+it make sure a pod is automatically created when new node is added.
+
+___________________
+liveness probe
+The main purpose of a liveness probe is to determine whether a container is alive and functioning correctly. 
+If a container becomes unresponsive or gets stuck in a bad state,
+ the liveness probe will detect this and allow Kubernetes to restart the container.
+_______________________
+rediness probe
+The primary goal of readiness probes is to indicate when a container is ready to handle requests. 
+If a container is not ready, Kubernetes will not send traffic to it through the associated Service.
+
+we can define when our container is ready.
+for backend we can say when port 8080 opened, we can say
+it is ready
+____________________
+init containers:
+Init Containers are a powerful tool for preparing the environment within a Kubernetes Pod before the main application starts.
+ By allowing developers to manage dependencies, check configurations, and run setup tasks in a structured and repeatable way, 
+Init Containers help improve the reliability and resilience of containerized applications in Kubernetes.
+_____________________
+Ingress:
+Suppose you have multiple applications (app1, app2) running in your Kubernetes cluster,
+each with its own Service. Instead of creating separate LoadBalancer-type Services for each app, 
+you can configure an Ingress to route traffic based on hostnames or paths, with SSL termination managed by the Ingress controller. 
+This setup simplifies external access and centralizes management.
+
+_____________________________
+Resource Quotas:
+In a previous project, I managed a Kubernetes cluster for multiple application teams, 
+each with its own namespace. By applying ResourceQuotas and LimitRanges, 
+I ensured each team could only use a fixed amount of resources and had standardized memory and CPU limits per container. 
+This reduced resource conflicts and helped maintain predictable performance, especially as new services were deployed.
+
+Overall, using ResourceQuotas and LimitRanges has been crucial in my role as a DevOps engineer, 
+where managing resources effectively directly impacts the reliability and cost efficiency of our Kubernetes workloads."
+
+_______________________________
+Camunda
+____________________________________________________
+Example Use Case in DevOps: CI/CD Pipeline Orchestration
+In a typical CI/CD pipeline, you have multiple stages such as code build, automated testing, quality checks, approval steps, 
+and finally, deployment. With Camunda, you can model this pipeline as a BPMN workflow, integrating steps for code build (using Jenkins or GitLab),
+testing (using Selenium or JUnit), and deployment (using Kubernetes or Terraform).
+If a testing step fails, Camunda can automate notifications or rollback processes, 
+ensuring the pipeline is reliable and easy to troubleshoot. This makes it easier to manage CI/CD at scale, even in a microservices environment.
+In Summary
+Camunda brings significant value to DevOps by enabling process automation, orchestration, and visibility in workflows 
+that span multiple systems, involve both automation and human steps, and require consistency and compliance. 
+By providing a centralized engine to manage complex workflows, 
+Camunda helps DevOps teams improve speed, reliability, and efficiency, ultimately supporting continuous delivery and operations at scale.
+_____________________________________________________
+Enabling Infrastructure as Code (IaC) Workflows
+Infrastructure provisioning and management are critical in DevOps,
+especially with IaC tools like Terraform, Ansible, or CloudFormation. 
+However, setting up complex infrastructure often involves several interdependent steps.
+Camunda can coordinate IaC workflows by integrating with these tools, 
+ensuring that infrastructure components are provisioned in the right order. 
+For example, Camunda can trigger a Terraform job to create infrastructure, wait for it to complete, 
+and then trigger an Ansible playbook for configuration, managing the workflow end-to-end.
+______________________________________________________________
